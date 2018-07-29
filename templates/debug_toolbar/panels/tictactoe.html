@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" type="text/css" href="reset.css">
+    <style>
+        h1 {
+            text-align: center;
+        }
+        td {
+            width: 100px;
+            height: 100px;
+        }
+        table {
+            margin: 5px auto;
+        }
+        .vert {
+            border-left: 2px solid black;
+            border-right: 2px solid black;
+        }
+        .hori {
+            border-top: 2px solid black;
+            border-bottom: 2px solid black;
+        }
+        .select{
+            width: 100px;
+            height: 100px;
+        }
+        .button_style{
+            width: 120px;
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+<h1>Tic Tac Toe</h1>
+<div align="center">
+    <input class="button_style" type="button" value="Redo" onclick="redo()"/>
+    <input class="button_style" type="button" value="Undo" onclick="undo()"/><br/>
+</div>
+<table border="2">
+    <tr>
+        <td id = "col_0_0" onclick="clickCell(0,0);">&nbsp;</td>
+        <td id = "col_0_1" class="vert" onclick="clickCell(0,1);">&nbsp;</td>
+        <td id = "col_0_2" onclick="clickCell(0,2)">&nbsp;</td>
+    </tr>
+    <tr>
+        <td id = "col_1_0" class="hori" onclick="clickCell(1,0);">&nbsp;</td>
+        <td id = "col_1_1" class="vert hori" onclick="clickCell(1,1);">&nbsp;</td>
+        <td id = "col_1_2" class="hori" onclick="clickCell(1,2);">&nbsp;</td>
+    </tr>
+    <tr>
+        <td id = "col_2_0" onclick="clickCell(2,0);">&nbsp;</td>
+        <td id = "col_2_1" class="vert" onclick="clickCell(2,1);">&nbsp;</td>
+        <td id = "col_2_2" onclick="clickCell(2,2);">&nbsp;</td>
+    </tr>
+    <br/>
+</table>
+    <div align="center">
+        <input class="button_style" type="button" value="Reset" onclick="reset()"/>
+    </div>
+<script>
+    var currentPlayer = prompt("Who is The Current Player X=1 O=2");
+    var moves = new Array(9);
+    var p+layer = new Array(9);
+    var pointer = 0;
+    var grid=new Array(3);
+    grid[0]=new Array(3);
+    grid[1]=new Array(3);
+    grid[2]=new Array(3);
+
+    for (var i=0; i<=2; i++) {
+        for (var j=0; j<=2; j++) {
+            grid[i][j]=0;
+        }
+    }
+    var val;
+    // Checks If Grid Is Already Clicked
+    function clickCell(x,y) {
+        if (grid[x][y]>0) {
+            alert("Wrong Press!!!!!");
+        }
+
+    // Clicking Of Boxes
+        else {
+            val="col_"+x+"_"+y;
+            player[pointer]=currentPlayer;
+            if (currentPlayer==1) {
+                document.getElementById(val).innerHTML="X";
+                grid[x][y]=1;
+                if(check(currentPlayer))
+                    alert('X WON THE GAME');
+                currentPlayer=2;
+            } else {
+                document.getElementById(val).innerHTML="O";
+                grid[x][y]=2;
+                if(check(currentPlayer))
+                    alert('O WON THE GAME');
+                currentPlayer=1;
+            }
+            moves[pointer]=val;
+            pointer++;
+        }
+    }
+
+    // Reset
+    // Game
+
+    function reset() {
+        for (var i=0; i<=2; i++) {
+            for (var j=0; j<=2; j++) {
+                grid[i][j]=0;
+                document.getElementById("col_"+i+"_"+j).innerHTML="&nbsp;";
+            }
+        }
+        currentPlayer=1;
+    }
+
+    //Redo
+
+    function undo() {
+        val=moves[pointer-1];
+        document.getElementById(val).innerHTML="&nbsp;";
+        var i = val.charAt(4);
+        var j = val.charAt(6);
+        grid[i][j]=0;
+        pointer--;
+        currentPlayer=player[pointer]
+    }
+
+    function redo() {
+        val=moves[pointer];
+        var i = val.charAt(4);
+        var j = val.charAt(6);
+        if(player[pointer]==1) {
+            document.getElementById(val).innerHTML = "X";
+            grid[i][j]=1;
+        }
+        else{
+            document.getElementById(val).innerHTML="O";
+            grid[i][j]=2;
+        }
+        pointer++;
+        currentPlayer=player[pointer]
+    }
+
+    function check(player) {
+        if(grid[0][0]==grid[0][1]&&grid[0][1]==grid[0][2]&&grid[0][2]==player)
+            return 1;
+        else if(grid[1][0]==grid[1][1]&&grid[1][1]==grid[1][2]&&grid[1][2]==player)
+            return 1;
+        else if(grid[2][0]==grid[2][1]&&grid[2][1]==grid[2][2]&&grid[2][2]==player)
+            return 1;
+        else if(grid[0][0]==grid[1][0]&&grid[1][0]==grid[2][0]&&grid[2][0]==player)
+            return 1;
+        else if(grid[0][1]==grid[1][1]&&grid[1][1]==grid[2][1]&&grid[2][1]==player)
+            return 1;
+        else if(grid[0][2]==grid[1][2]&&grid[1][2]==grid[2][2]&&grid[2][2]==player)
+            return 1;
+        else if(grid[0][0]==grid[1][1]&&grid[1][1]==grid[2][2]&&grid[2][2]==player)
+            return 1;
+        else if(grid[0][2]==grid[1][1]&&grid[1][1]==grid[2][0]&&grid[2][0]==player)
+            return 1;
+        else
+            return 0;
+    }
+
+</script>
+</body>
+</html>
